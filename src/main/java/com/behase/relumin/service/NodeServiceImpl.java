@@ -45,6 +45,17 @@ public class NodeServiceImpl implements NodeService {
 		try (Jedis jedis = JedisUtils.getJedisByHostAndPort(clusterNode.getHostAndPort())) {
 			Map<String, String> result = JedisUtils.parseInfoResult(jedis.info());
 
+			log.info("slowlog clusterName={}", String.valueOf(jedis.slowlogLen()));
+
+			return result;
+		}
+	}
+
+	@Override
+	public Map<String, String> getSlowlog(ClusterNode clusterNode) {
+		try (Jedis jedis = JedisUtils.getJedisByHostAndPort(clusterNode.getHostAndPort())) {
+			Map<String, String> result = JedisUtils.parseInfoResult(jedis.info());
+
 			return result;
 		}
 	}

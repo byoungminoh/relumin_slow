@@ -5,9 +5,13 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ClusterSlowlog {
+public class ClusterNodeSlowlog {
     private String queryId;
     private String createdAt;
     private String executionTime;
-    private List<String> queries;
+    private List<String> paramaters;
+
+    public int getParamatersCount() {
+        return servedSlotsSet.size();
+    }
 }
