@@ -371,4 +371,22 @@ public class ClusterServiceImpl implements ClusterService {
 
 		return result;
 	}
+
+    @Override
+    public Map<String, List<Map<String, String>>> getClusterSlowLogHistory(String clusterName, List<String> nodes) {
+        Map<String, List<Map<String, String>>> result;
+
+
+
+        nodes.parallelStream().forEach(nodeId -> {
+            log.debug("node loop : {}", nodeId);
+            List<Map<String, String>> slowLogHistory = nodeService.getSlowLogHistory(clusterName, nodeId);
+
+            if (!slowLogHistory.isEmpty()) {
+                result.put(nodeId, slowLogHistory);
+            }
+        });
+
+        return result;
+    }
 }

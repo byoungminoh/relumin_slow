@@ -198,4 +198,20 @@ public class ClusterApiController {
 		clusterService.setClusterNotice(clusterName, noticeObj);
 		return clusterService.getClusterNotice(clusterName);
 	}
+
+    @RequestMapping(value = "/cluster/{clusterName}/slowlogs", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object getSlowLogs(
+            @PathVariable String clusterName,
+            @RequestParam(defaultValue = "") String nodes
+    ) {
+        List<String> nodesList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(nodes)) {
+            nodesList.addAll(Splitter.on(",").splitToList(nodes));
+        }
+        if (nodesList.isEmpty()) {
+            throw new InvalidParameterException("'nodes' is empty.");
+        }
+
+        return clusterService.getClusterSlowLogHistory(clusterName, nodesList);
+    }
 }

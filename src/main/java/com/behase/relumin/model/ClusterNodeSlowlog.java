@@ -11,7 +11,4 @@ public class ClusterNodeSlowlog {
     private String executionTime;
     private List<String> paramaters;
 
-    public int getParamatersCount() {
-        return servedSlotsSet.size();
-    }
 }
