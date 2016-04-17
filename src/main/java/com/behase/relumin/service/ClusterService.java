@@ -39,5 +39,5 @@ public interface ClusterService {
 	Map<String, Map<String, List<List<Object>>>> getClusterStaticsInfoHistory(String clusterName, List<String> nodes,
 			List<String> fields, long start, long end);
 
-    List<Map<String, List<Map<String, String>>>> getClusterSlowLogHistory(String clusterName, List<String> nodes);
+	Map<String, List<Map<String, String>>> getClusterSlowLogHistory(String clusterName, List<String> nodes);
 }

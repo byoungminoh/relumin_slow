@@ -374,7 +374,7 @@ public class ClusterServiceImpl implements ClusterService {
 
     @Override
     public Map<String, List<Map<String, String>>> getClusterSlowLogHistory(String clusterName, List<String> nodes) {
-        Map<String, List<Map<String, String>>> result;
+		Map<String, List<Map<String, String>>> result = Maps.newLinkedHashMap();
 
 
 
