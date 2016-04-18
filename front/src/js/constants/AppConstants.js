@@ -12,6 +12,7 @@ module.exports = keyMirror({
     SET_NODE_METRICS_QUERY: null,
     SET_NODE_METRICS_QUERY_ONLY_AUTO_REFRESH: null,
     GET_NODE_SLOWLGOS: null,
+    SET_NODE_SLOWLGOS_QUERY: null,
     GET_CLUSTER_NOTICE: null,
     DELETE_CLUSTER: null,
     GET_USERS: null

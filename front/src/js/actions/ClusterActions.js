@@ -50,26 +50,6 @@ var ClusterActions = {
 
         ApiUtils.Cluster.getNodeMetrics(clusterName, data, callbacks);
     },
-    getNodeSlowLogs: function(clusterName, data, callbacks) {
-        callbacks = callbacks || {};
-
-        Utils.wrapSuccess(callbacks, function(data) {
-            AppDispatcher.dispatch({
-                actionType: AppConstants.GET_NODE_SLOWLOGS,
-                clusterName: clusterName,
-                data: data
-            });
-        });
-
-        ApiUtils.Cluster.getNodeSlowlogs(clusterName, data, callbacks);
-    },
-    setNodeSlowLogQuery: function(clusterName, query) {
-        AppDispatcher.dispatch({
-            actionType: AppConstants.SET_NODE_SLOWLOG_QUERY,
-            clusterName: clusterName,
-            data: query
-        });
-    },
     setNodeMetricsQuery: function(clusterName, query) {
         AppDispatcher.dispatch({
             actionType: AppConstants.SET_NODE_METRICS_QUERY,
@@ -82,6 +62,26 @@ var ClusterActions = {
             actionType: AppConstants.SET_NODE_METRICS_QUERY_ONLY_AUTO_REFRESH,
             clusterName: clusterName,
             autoRefresh: autoRefresh
+        });
+    },
+    getNodeSlowLog: function(clusterName, data, callbacks) {
+        callbacks = callbacks || {};
+
+        Utils.wrapSuccess(callbacks, function(data) {
+            AppDispatcher.dispatch({
+                actionType: AppConstants.GET_NODE_SLOWLOG,
+                clusterName: clusterName,
+                data: data
+            });
+        });
+
+        ApiUtils.Cluster.getNodeSlowlogs(clusterName, data, callbacks);
+    },
+    setNodeSlowLogQuery: function(clusterName, query) {
+        AppDispatcher.dispatch({
+            actionType: AppConstants.SET_NODE_SLOWLOG_QUERY,
+            clusterName: clusterName,
+            data: query
         });
     },
     getClusterNotice: function(clusterName, callbacks) {

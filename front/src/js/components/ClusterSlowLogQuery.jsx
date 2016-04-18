@@ -97,6 +97,31 @@ var ClusterSlowLogQuery = React.createClass({
                 </div>
             </div>
         );
+    },
+    handleChangeNodesSelect: function(val) {
+        this.setState({
+            nodesValues: val
+        });
+    },
+    handleGetClick: function(event) {
+        event.preventDefault();
+        var query = {
+            start: this.state.startDate.format('x'),
+            end: this.state.endDate.format('x'),
+            nodes: this.state.nodesValues
+        };
+        if (!query.nodes) {
+            Utils.showAlert({
+                message: 'Nodes is empty.',
+                level: 'error'
+            });
+            return;
+        }
+
+        ClusterActions.setNodeSlowLogQuery(this.props.cluster.cluster_name, query);
+    },
+    handleClickDefault: function(event) {
+        event.preventDefault();
     }
 });
 

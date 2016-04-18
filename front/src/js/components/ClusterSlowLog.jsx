@@ -2,13 +2,13 @@ var React = require('react');
 
 var ClusterActions = require('../actions/ClusterActions');
 var NodeSlowLogQueryStore = require('../stores/NodeSlowLogQueryStore');
-var NodeSlowLogsStore = require('../stores/NodeSlowLogsStore');
+var NodeSlowLogStore = require('../stores/NodeSlowLogStore');
 var Utils = require('../utils/Utils');
 
 var ClusterSlowLogs = React.createClass({
     getInitialState: function() {
         return {
-            slowlogs: NodeSlowLogsStore.getSlowLogs(this.props.cluster.cluster_name),
+            slowlogs: NodeSlowLogStore.getSlowLogs(this.props.cluster.cluster_name),
             loading: true,
             fullViewConfig: {}
         };
@@ -17,10 +17,10 @@ var ClusterSlowLogs = React.createClass({
         var _this = this;
         var query = NodeSlowLogQueryStore.getNodeSlowLogQuery(this.props.cluster.cluster_name);
 
-        NodeSlowLogsStore.addChangeListener(this.handleChangeNodeSlowLog);
+        NodeSlowLogStore.addChangeListener(this.handleChangeNodeSlowLog);
         NodeSlowLogQueryStore.addChangeListener(this.handleChangeQuery);
 
-        ClusterActions.getNodeSlowLogs(
+        ClusterActions.getNodeSlowLog(
             this.props.cluster.cluster_name,
             {
                 nodes: query.nodes
@@ -32,11 +32,11 @@ var ClusterSlowLogs = React.createClass({
         });
     },
     componentWillUnmount: function() {
-      NodeSlowLogsStore.removeChangeListener(this.handleChangeNodeSlowLog);
+      NodeSlowLogStore.removeChangeListener(this.handleChangeNodeSlowLog);
       NodeSlowLogQueryStore.removeChangeListener(this.handleChangeQuery);
     },
     render: function() {
-      console.log(123)
+      var _this = this;
         return (
             <div className="panel panel-default cluster-nodes-slowlogs-components">
                 <div className="panel-heading clearfix">
@@ -51,7 +51,7 @@ var ClusterSlowLogs = React.createClass({
                                     <th><span data-toggle="tooltip" data-placement="top" title="">host:port</span></th>
                                     <th><span data-toggle="tooltip" data-placement="top" title="">slowlog id</span></th>
                                     <th><span data-toggle="tooltip" data-placement="top" title="">time stamp</span></th>
-                                    <th><span data-toggle="tooltip" data-placement="top" title="">execution time</span></th>
+                                    <th><span data-toggle="tooltip" data-placement="top" title="">execution time(ms)</span></th>
                                     <th><span data-toggle="tooltip" data-placement="top" title="">args</span></th>
                                 </tr>
                             </thead>
@@ -62,9 +62,9 @@ var ClusterSlowLogs = React.createClass({
                                     _.map(slowlogs, function(slowlog) {
                                       return (
                                         <tr>
-                                          <td>{nodeid}</td>
+                                          <td>{(_this.props.cluster)? Utils.getNodeByNodeId(_this.props.cluster.nodes, nodeid).host_and_port : null}</td>
                                           <td>{slowlog.id}</td>
-                                          <td>{slowlog.time_stamp}</td>
+                                          <td>{new Date(slowlog.time_stamp * 1000).toString()}</td>
                                           <td>{slowlog.execution_time}</td>
                                           <td>{slowlog.args ? slowlog.args.join(' ') : null}</td>
                                         </tr>
@@ -82,13 +82,12 @@ var ClusterSlowLogs = React.createClass({
         );
     },
     handleChangeNodeSlowLog: function() {
-      console.log(999)
+      console.log(NodeSlowLogStore.getSlowLogs(this.props.cluster.cluster_name))
         this.setState({
-            slowlogs: NodeSlowLogsStore.getSlowLogs(this.props.cluster.cluster_name)
+            slowlogs: NodeSlowLogStore.getSlowLogs(this.props.cluster.cluster_name)
         });
     },
     handleChangeQuery: function() {
-        console.log(888)
         var _this = this;
         var query = NodeSlowLogQueryStore.getNodeSlowLogQuery(this.props.cluster.cluster_name);
 
@@ -98,19 +97,26 @@ var ClusterSlowLogs = React.createClass({
             nodes: query.nodes
         };
 
-        this.setState({
-            loading: true,
-            query: query
-        });
-        // ClusterActions.getNodeSlowLogs(
-        //     this.props.cluster.cluster_name,
-        //     requestData,
-        //     {
-        //         complete: function() {
-        //             _this.setState({loading: false});
-        //         }
-        //     }
-        // );
+        console.log(requestData)
+
+
+        if (this.state.loading) {
+          return;
+        } else {
+          this.setState({
+              loading: true,
+              query: query
+          });
+          ClusterActions.getNodeSlowLog(
+              this.props.cluster.cluster_name,
+              requestData,
+              {
+                  complete: function() {
+                      _this.setState({loading: false});
+                  }
+              }
+          );
+        }
     },
 });
 

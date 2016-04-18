@@ -17,7 +17,7 @@ var ClusterSlowLogHandler = React.createClass({
     },
     render: function() {
         var cluster = ClusterStore.getCluster(this.getParams().clusterName);
-        var key = 'cluster-sloglog' + this.getParams().clusterName;
+        var key = 'cluster-slowlog' + this.getParams().clusterName;
 
         if (cluster) {
             return (

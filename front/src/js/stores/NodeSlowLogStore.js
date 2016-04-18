@@ -8,7 +8,7 @@ var _data = {};
 
 var CHANGE_EVENT = 'change';
 
-var NodeSlowLogsStore = assign({}, EventEmitter.prototype, {
+var NodeSlowLogStore = assign({}, EventEmitter.prototype, {
     getSlowLogs: function(clusterName) {
         return _data[clusterName];
     },
@@ -25,15 +25,15 @@ var NodeSlowLogsStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
     switch(action.actionType) {
-        case AppConstants.GET_NODE_SLOWLOGS:
+        case AppConstants.GET_NODE_SLOWLOG:
             var newData = {};
             newData[action.clusterName] = action.data;
             _data = newData;
-            NodeSlowLogsStore.emitChange();
+            NodeSlowLogStore.emitChange();
             break;
         default:
             // no operation
     }
 });
 
-module.exports = NodeSlowLogsStore;
+module.exports = NodeSlowLogStore;
