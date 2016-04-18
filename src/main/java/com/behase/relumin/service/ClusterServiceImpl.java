@@ -53,7 +53,7 @@ public class ClusterServiceImpl implements ClusterService {
 
 	@Override
 	public Set<String> getClusters() {
-		try (Jedis dataStoreJedis = dataStoreJedisPool.getResource()) {
+            		try (Jedis dataStoreJedis = dataStoreJedisPool.getResource()) {
 			return dataStoreJedis.smembers(Constants.getClustersRedisKey(redisPrefixKey));
 		}
 	}

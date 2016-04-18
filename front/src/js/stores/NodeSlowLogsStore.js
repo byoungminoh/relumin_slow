@@ -26,7 +26,6 @@ var NodeSlowLogsStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case AppConstants.GET_NODE_SLOWLOGS:
-            console.log(action);
             var newData = {};
             newData[action.clusterName] = action.data;
             _data = newData;

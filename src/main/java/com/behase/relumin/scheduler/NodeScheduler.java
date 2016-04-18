@@ -109,7 +109,7 @@ public class NodeScheduler {
                             for (Slowlog slowLog : slowLogs) {
                                 jedis.lpush(slowLogKey, mapper.writeValueAsString(slowLog));
                             }
-						}
+						}   
 					} catch (Exception e) {
 						log.error("collectStaticsIndo fail. clusterName={}, hostAndPort={}", clusterName, clusterNode.getHostAndPort(), e);
 					}

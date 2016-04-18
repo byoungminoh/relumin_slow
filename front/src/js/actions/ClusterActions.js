@@ -63,6 +63,13 @@ var ClusterActions = {
 
         ApiUtils.Cluster.getNodeSlowlogs(clusterName, data, callbacks);
     },
+    setNodeSlowLogQuery: function(clusterName, query) {
+        AppDispatcher.dispatch({
+            actionType: AppConstants.SET_NODE_SLOWLOG_QUERY,
+            clusterName: clusterName,
+            data: query
+        });
+    },
     setNodeMetricsQuery: function(clusterName, query) {
         AppDispatcher.dispatch({
             actionType: AppConstants.SET_NODE_METRICS_QUERY,
