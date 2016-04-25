@@ -103,6 +103,27 @@ var ClusterSlowLogQuery = React.createClass({
             nodesValues: val
         });
     },
+    handleApplyDateRangePicker: function(event, picker) {
+        console.log(event);
+        console.log(picker);
+        var ranges = Utils.getPickerRanges();
+
+        var startDate = picker.startDate;
+        var endDate = picker.endDate;
+        var chosen = ranges[picker.chosenLabel];
+        if (chosen) {
+            startDate = chosen[0];
+            endDate = chosen[1];
+        }
+
+        this.setState({
+            ranges: ranges,
+            chosenLabel: picker.chosenLabel,
+            startDate: startDate,
+            endDate: endDate,
+            autoRefresh: chosen ? this.state.autoRefresh : false
+        });
+    },
     handleGetClick: function(event) {
         event.preventDefault();
         var query = {

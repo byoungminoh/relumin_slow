@@ -373,10 +373,12 @@ public class ClusterServiceImpl implements ClusterService {
 	}
 
     @Override
-    public Map<String, List<Map<String, String>>> getClusterSlowLogHistory(String clusterName, List<String> nodes) {
+    public Map<String, List<Map<String, String>>> getClusterSlowLogHistory(String clusterName, List<String> nodes, long start, long end) {
 		Map<String, List<Map<String, String>>> result = Maps.newLinkedHashMap();
 
-
+        if (end < start) {
+            throw new InvalidParameterException("End time must be larger than start time.");
+        }
 
         nodes.parallelStream().forEach(nodeId -> {
             log.debug("node loop : {}", nodeId);

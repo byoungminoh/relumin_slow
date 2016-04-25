@@ -202,8 +202,24 @@ public class ClusterApiController {
     @RequestMapping(value = "/cluster/{clusterName}/slowlogs", method = {RequestMethod.GET, RequestMethod.POST})
     public Object getSlowLogs(
             @PathVariable String clusterName,
-            @RequestParam(defaultValue = "") String nodes
+            @RequestParam(defaultValue = "") String nodes,
+            @RequestParam(defaultValue = "") String start,
+            @RequestParam(defaultValue = "") String end
     ) {
+
+        long startLong;
+        long endLong;
+        try {
+            startLong = Long.valueOf(start);
+        } catch (Exception e) {
+            throw new InvalidParameterException("'start' is must be number.");
+        }
+        try {
+            endLong = Long.valueOf(end);
+        } catch (Exception e) {
+            throw new InvalidParameterException("'end' is must be number.");
+        }
+
         List<String> nodesList = Lists.newArrayList();
         if (StringUtils.isNotBlank(nodes)) {
             nodesList.addAll(Splitter.on(",").splitToList(nodes));
@@ -212,6 +228,6 @@ public class ClusterApiController {
             throw new InvalidParameterException("'nodes' is empty.");
         }
 
-        return clusterService.getClusterSlowLogHistory(clusterName, nodesList);
+        return clusterService.getClusterSlowLogHistory(clusterName, nodesList, startLong, endLong);
     }
 }
